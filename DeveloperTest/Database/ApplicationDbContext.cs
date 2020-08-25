@@ -1,12 +1,14 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using DeveloperTest.Database.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DeveloperTest.Database
 {
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -31,6 +33,15 @@ namespace DeveloperTest.Database
                     Engineer = "Test",
                     When = DateTime.Now
                 });
+
+            modelBuilder.Entity<Customer>()
+                .HasKey(x => x.CustomerId);
+            modelBuilder.Entity<Customer>()
+                .Property(x => x.CustomerId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Customer>().Property(x => x.Name).IsRequired(true);
+            modelBuilder.Entity<Customer>().Property(x => x.Type).IsRequired(true);
+
         }
     }
 }

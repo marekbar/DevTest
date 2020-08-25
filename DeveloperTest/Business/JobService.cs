@@ -3,6 +3,7 @@ using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Database;
 using DeveloperTest.Database.Models;
 using DeveloperTest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperTest.Business
 {
@@ -17,22 +18,37 @@ namespace DeveloperTest.Business
 
         public JobModel[] GetJobs()
         {
-            return context.Jobs.Select(x => new JobModel
-            {
-                JobId = x.JobId,
-                Engineer = x.Engineer,
-                When = x.When
-            }).ToArray();
+            return context.Jobs.Include(j => j.Customer)
+                .Select(x => new JobModel
+                {
+                    JobId = x.JobId,
+                    Engineer = x.Engineer,
+                    When = x.When,
+                    Customer = new CustomerModel
+                    {
+                        CustomerId = x.Customer.CustomerId,
+                        Name = x.Customer.Name,
+                        Type = x.Customer.Type
+                    }
+                }).ToArray();
         }
 
         public JobModel GetJob(int jobId)
         {
-            return context.Jobs.Where(x => x.JobId == jobId).Select(x => new JobModel
-            {
-                JobId = x.JobId,
-                Engineer = x.Engineer,
-                When = x.When
-            }).SingleOrDefault();
+            return context.Jobs.Include(j => j.Customer)
+                .Where(x => x.JobId == jobId)
+                .Select(x => new JobModel
+                {
+                    JobId = x.JobId,
+                    Engineer = x.Engineer,
+                    When = x.When,
+                    Customer = new CustomerModel
+                    {
+                        CustomerId = x.Customer.CustomerId,
+                        Name = x.Customer.Name,
+                        Type = x.Customer.Type
+                    }
+                }).SingleOrDefault();
         }
 
         public JobModel CreateJob(BaseJobModel model)
@@ -40,7 +56,8 @@ namespace DeveloperTest.Business
             var addedJob = context.Jobs.Add(new Job
             {
                 Engineer = model.Engineer,
-                When = model.When
+                When = model.When,
+                CustomerId = model.CustomerId
             });
 
             context.SaveChanges();

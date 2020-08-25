@@ -24,4 +24,7 @@ export class JobDetailComponent implements OnInit {
     this.jobService.GetJob(this.jobId).subscribe(job => this.job = job);
   }
 
+  getCustomerName(job: JobModel): string {
+    return (job && job.customer && job.customer.name) ? job.customer.name : 'Unknown';
+  }
 }

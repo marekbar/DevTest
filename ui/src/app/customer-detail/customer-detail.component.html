@@ -1,0 +1,5 @@
+<p>CustomerId: {{customer && customer.customerId}}</p>
+<p>Name: {{customer && customer.name}}</p>
+<p>Type: {{customer && customer.type | customerType}}</p>
+
+<a [routerLink]="['/customers']">Back</a> 

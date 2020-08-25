@@ -9,12 +9,19 @@ import { JobComponent } from './job/job.component';
 import { HomeComponent } from './home/home.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
 
+import { CustomerComponent } from './customer/customer.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
+import { CustomerTypePipe } from './pipes/customer-type/pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
     JobComponent,
     HomeComponent,
-    JobDetailComponent
+    JobDetailComponent,
+    CustomerComponent,
+    CustomerDetailComponent,
+    CustomerTypePipe
   ],
   imports: [
     FormsModule,
